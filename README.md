@@ -73,11 +73,17 @@ To run the script and scrape articles:
 node index.js
 ```
 
-The script will:
-1. Launch a headless browser using Puppeteer.  
-2. Navigate to Sporza’s search page, search for “AA Gent,” and extract the first 3 article titles and links.  
-3. Format them into a message and send it via the Telegram Bot API using your credentials from `.env`.  
-
+What the script does:
+	1.	Checks Previously Stored Articles
+      - The script loads a local JSON file (e.g., storedArticles.json) to see which articles were fetched during the previous run.
+	2.	Launches Puppeteer and Scrapes the First 3 Articles
+	   - It navigates to Sporza’s search page, searches for “AA Gent,” and extracts the first 3 article titles and links.
+	3.	Compares New vs. Stored Articles
+	   - If any of the newly scraped articles do not match what’s in storedArticles.json, they are considered new.
+	4.	Sends a Telegram Message (Only If There Are New Articles)
+	   - If at least one new article is found, the script formats a Telegram message with the new titles/links and sends it via the Telegram Bot API.
+	5.	Updates storedArticles.json
+	   - Regardless of whether there were new articles or not, the script overwrites storedArticles.json with the latest 3 articles so subsequent runs can accurately compare old vs. new.
 ---
 
 ## Scheduling with Cron
@@ -193,7 +199,3 @@ You should see your newly added line.
 
 MIT License.  
 Feel free to use and modify this project as needed.  
-
---- 
-
-Let me know if you need further refinements!
